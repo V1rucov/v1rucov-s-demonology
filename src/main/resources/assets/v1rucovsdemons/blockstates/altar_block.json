@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "v1rucovsdemons:block/altar_block","uvlock":  false},
+    "facing=east": {"model": "v1rucovsdemons:block/altar_block", "y": 90,"uvlock":  false},
+    "facing=south": {"model": "v1rucovsdemons:block/altar_block", "y": 180,"uvlock":  false},
+    "facing=west": {"model": "v1rucovsdemons:block/altar_block", "y": 270,"uvlock":  false}
+  }
+}
