@@ -1,26 +1,10 @@
-package net.fabricmc.v1rucovsdemons.common.model;
+package net.fabricmc.v1rucovsdemons.common.block.model;
 
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.ints.Int2BooleanFunction;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.util.BooleanFunction;
 import net.minecraft.block.Block;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.SpriteAtlasManager;
-import net.minecraft.client.render.model.UnbakedModel;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class altarModel  {

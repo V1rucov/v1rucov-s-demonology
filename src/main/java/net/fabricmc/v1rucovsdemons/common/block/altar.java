@@ -1,21 +1,20 @@
 package net.fabricmc.v1rucovsdemons.common.block;
 
-import it.unimi.dsi.fastutil.ints.Int2BooleanFunction;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
-import net.fabricmc.v1rucovsdemons.common.model.altarModel;
+import net.fabricmc.v1rucovsdemons.common.block.model.altarModel;
+import net.fabricmc.v1rucovsdemons.main;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -23,15 +22,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.block.*;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Stream;
+import org.jetbrains.annotations.Nullable;
 
 public class altar extends BlockWithEntity implements BlockEntityProvider {
-
     public altar(Settings settings) {
         super(settings);
         setDefaultState(this.getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
@@ -56,7 +51,6 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return (BlockState)this.getDefaultState().with(Properties.HORIZONTAL_FACING, ctx.getPlayerFacing());
     }
-
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
@@ -65,5 +59,24 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state){
         return new altarEntity(pos,state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, main.ALTAR_ENTITY, (world1, pos, state1, be) -> altarEntity.tick(world1,pos,state1,be));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if(!world.isClient){
+            NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world,pos);
+            if(screenHandlerFactory!=null){
+                player.openHandledScreen(screenHandlerFactory);
+                return ActionResult.CONSUME;
+            }
+        }
+        return ActionResult.SUCCESS;
     }
 }

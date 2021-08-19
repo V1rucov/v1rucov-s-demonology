@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.fabricmc.v1rucovsdemons.main"
+    ],
+    "client": [
+      "net.fabricmc.v1rucovsdemons.client.mainClient"
     ]
   },
   "mixins": [
