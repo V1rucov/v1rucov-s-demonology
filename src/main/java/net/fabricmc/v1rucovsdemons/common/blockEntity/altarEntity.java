@@ -60,6 +60,7 @@ public class altarEntity extends BlockEntity implements NamedScreenHandlerFactor
         super.writeNbt(nbt);
         nbt.putInt("altarLevel",level);
         Inventories.writeNbt(nbt,items);
+
         return nbt;
     }
 
