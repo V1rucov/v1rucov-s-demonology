@@ -1,30 +1,19 @@
 package net.fabricmc.v1rucovsdemons.client.gui;
 
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
-import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WTabPanel;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.icon.ItemIcon;
-import net.fabricmc.v1rucovsdemons.main;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.StoneButtonBlock;
-import net.minecraft.command.argument.ItemStackArgument;
+import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.EmptyMapItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Position;
-import java.util.function.Predicate;
 
 public class altarGuiDescription extends SyncedGuiDescription {
     private static final int inventorySize = 1;
@@ -32,7 +21,7 @@ public class altarGuiDescription extends SyncedGuiDescription {
     private ScreenHandlerContext context;
 
     public altarGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context){
-        super(main.ALTAR_SCREEN,syncId, playerInventory, getBlockInventory(context, inventorySize),getBlockPropertyDelegate(context));
+        super(v1ModMain.ALTAR_SCREEN,syncId, playerInventory, getBlockInventory(context, inventorySize),getBlockPropertyDelegate(context));
         this.context = context;
         WGridPanel root = new WGridPanel();
         setRootPanel(root);
@@ -57,13 +46,5 @@ public class altarGuiDescription extends SyncedGuiDescription {
     @Override
     public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         super.onSlotClick(slotNumber, button, action, player);
-    }
-
-    @Override
-    public void close(PlayerEntity player) {
-        //super.close(player);
-        //this.context.run((world, pos) -> {
-            //this.inventory(player, this.blockInventory);
-        //});
     }
 }

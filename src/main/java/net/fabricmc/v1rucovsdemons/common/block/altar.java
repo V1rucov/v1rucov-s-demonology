@@ -2,7 +2,7 @@ package net.fabricmc.v1rucovsdemons.common.block;
 
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.fabricmc.v1rucovsdemons.common.block.model.altarModel;
-import net.fabricmc.v1rucovsdemons.main;
+import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -12,7 +12,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -64,7 +63,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, main.ALTAR_ENTITY, (world1, pos, state1, be) -> altarEntity.tick(world1,pos,state1,be));
+        return checkType(type, v1ModMain.ALTAR_ENTITY, (world1, pos, state1, be) -> altarEntity.tick(world1,pos,state1,be));
     }
 
     @Override

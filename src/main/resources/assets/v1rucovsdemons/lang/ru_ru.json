@@ -1,4 +1,5 @@
 {
   "block.v1rucovsdemons.altar_block": "алтарь",
-  "item.v1rucovsdemons.obsidian_knife": "обсидиановый нож"
+  "item.v1rucovsdemons.obsidian_knife": "обсидиановый нож",
+  "itemGroup.v1rucovsdemons.v1demons": "демонология"
 }

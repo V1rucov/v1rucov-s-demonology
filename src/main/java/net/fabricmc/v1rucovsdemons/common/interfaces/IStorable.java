@@ -8,17 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
-//@FunctionalInterface
+
 public interface IStorable extends Inventory {
     DefaultedList<ItemStack> getItems();
-
-    //static IStorable of(DefaultedList<ItemStack> items) {
-    //    return () -> items;
-    //}
-
-    //static IStorable ofSize(int size) {
-    //    return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
-    //}
 
     @Override
     default int size(){

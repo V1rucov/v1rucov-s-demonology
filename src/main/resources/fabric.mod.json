@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.v1rucovsdemons.main"
+      "net.fabricmc.v1rucovsdemons.v1ModMain"
     ],
     "client": [
-      "net.fabricmc.v1rucovsdemons.client.mainClient"
+      "net.fabricmc.v1rucovsdemons.client.v1ModMainClient"
     ]
   },
   "mixins": [
