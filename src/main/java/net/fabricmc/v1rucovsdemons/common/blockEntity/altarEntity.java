@@ -64,6 +64,7 @@ public class altarEntity extends BlockEntity implements NamedScreenHandlerFactor
     public NbtCompound writeNbt(NbtCompound nbt) {
         nbt.putBoolean("IsBuilt",IsBuilt);
         Inventories.writeNbt(nbt,items);
+
         return super.writeNbt(nbt);
     }
 
