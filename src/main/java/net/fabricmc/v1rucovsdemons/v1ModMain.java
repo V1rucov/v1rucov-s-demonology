@@ -3,7 +3,6 @@ package net.fabricmc.v1rucovsdemons;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.v1rucovsdemons.client.gui.altarGuiDescription;
 import net.fabricmc.v1rucovsdemons.common.block.*;
 import net.fabricmc.v1rucovsdemons.common.item.*;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
@@ -28,7 +27,6 @@ public class v1ModMain implements ModInitializer {
 	public static final Block ALTAR;
 	public static final BlockItem ALTAR_ITEM;
 	public static final BlockEntityType<altarEntity> ALTAR_ENTITY;
-	public static final ScreenHandlerType ALTAR_SCREEN;
 
 	public static final obsidianKnife OBSIDIAN_KNIFE;
 
@@ -38,8 +36,6 @@ public class v1ModMain implements ModInitializer {
 		ALTAR_ITEM = Registry.register(Registry.ITEM, ALTAR_IDENTITY,new BlockItem(ALTAR,new Item.Settings().group(net.fabricmc.v1rucovsdemons.v1ModMain.ITEM_GROUP)));
 		ALTAR_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,"v1rucovsdemons:altar_entity",
 				FabricBlockEntityTypeBuilder.create(altarEntity::new,ALTAR).build(null));
-		ALTAR_SCREEN = ScreenHandlerRegistry.registerSimple(ALTAR_IDENTITY,
-				(syncId, inventory)-> new altarGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY));
 		// obsidian knife
 		OBSIDIAN_KNIFE = Registry.register(Registry.ITEM,new Identifier(modId,"obsidian_knife"),new obsidianKnife());
 	}

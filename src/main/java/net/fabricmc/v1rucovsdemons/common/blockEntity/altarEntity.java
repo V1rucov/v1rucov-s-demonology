@@ -1,6 +1,5 @@
 package net.fabricmc.v1rucovsdemons.common.blockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.v1rucovsdemons.client.gui.altarGuiDescription;
 import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.minecraft.block.BlockState;
@@ -23,11 +22,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class altarEntity extends BlockEntity implements NamedScreenHandlerFactory, IStorable {
-    public DefaultedList<ItemStack> items = DefaultedList.ofSize(1,ItemStack.EMPTY);
-    private boolean IsBuilt = false;
+public class altarEntity extends BlockEntity implements IStorable {
+    DefaultedList<ItemStack> items = DefaultedList.ofSize(6,ItemStack.EMPTY);
+    private boolean IsCraftingMode = false;
     public boolean getBuiltStatus(){
-        return IsBuilt;
+        return IsCraftingMode;
     }
 
     public altarEntity(BlockPos pos, BlockState state){
@@ -39,19 +38,21 @@ public class altarEntity extends BlockEntity implements NamedScreenHandlerFactor
         return items;
     }
 
+    public void setLastStack(ItemStack stack){
+        int lastIndex = 0;
+        for (int i=0; i<6;i++) {
+            if(!items.get(i).isEmpty()) lastIndex++;
+            else break;
+        }
+        if(lastIndex<6) items.add(lastIndex,stack);
+    }
+    public ItemStack removeLastStack(){
+        return null;
+    }
+
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
         return pos.isWithinDistance(player.getPos(),4.5);
-    }
-
-    @Override
-    public Text getDisplayName(){
-        return new TranslatableText(getCachedState().getBlock().getTranslationKey());
-    }
-
-    @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player){
-        return new altarGuiDescription(syncId, inventory, ScreenHandlerContext.create(world, pos));
     }
 
     @Override
@@ -62,18 +63,13 @@ public class altarEntity extends BlockEntity implements NamedScreenHandlerFactor
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        nbt.putBoolean("IsBuilt",IsBuilt);
+        nbt.putBoolean("IsCraftingMode",IsCraftingMode);
         Inventories.writeNbt(nbt,items);
 
         return super.writeNbt(nbt);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, altarEntity entity){
-        //var blockUnder = world.getBlockState(pos.add(0,-1,0)).getBlock();
-        System.out.println(entity.items.get(0).getName());
-        if(entity.items.get(0) == new ItemStack(v1ModMain.OBSIDIAN_KNIFE)){
-            entity.IsBuilt = true;
-        }
-        else entity.IsBuilt = false;
+
     }
 }

@@ -14,7 +14,6 @@ public class v1ModMainClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient(){
-        ScreenRegistry.<altarGuiDescription, altarScreen>register(v1ModMain.ALTAR_SCREEN,(gui, inventory, title)->new altarScreen(gui,inventory.player,title));
 
         BlockEntityRendererRegistry.INSTANCE.register(net.fabricmc.v1rucovsdemons.v1ModMain.ALTAR_ENTITY, new BlockEntityRendererFactory<altarEntity>() {
             @Override
