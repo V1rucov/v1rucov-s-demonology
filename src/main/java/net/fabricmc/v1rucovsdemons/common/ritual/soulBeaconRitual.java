@@ -9,7 +9,12 @@ import net.minecraft.util.collection.DefaultedList;
 public class soulBeaconRitual extends ritual{
     public soulBeaconRitual(){
         super();
-        components.add(new ItemStack(Items.WITHER_SKELETON_SKULL));
+        components.set(0,new ItemStack(Items.WITHER_SKELETON_SKULL));
+        components.set(1,ItemStack.EMPTY);
+        components.set(2,ItemStack.EMPTY);
+        components.set(3,ItemStack.EMPTY);
+        components.set(4,ItemStack.EMPTY);
+        components.set(5,ItemStack.EMPTY);
     }
 
     @Override
@@ -19,7 +24,7 @@ public class soulBeaconRitual extends ritual{
 
     @Override
     public boolean compareIngredients(DefaultedList<ItemStack> items) {
-        if(items == components)
+        if(items.get(0).getItem() == components.get(0).getItem())
             return true;
         return false;
     }

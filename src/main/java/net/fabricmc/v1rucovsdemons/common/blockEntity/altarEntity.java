@@ -1,31 +1,29 @@
 package net.fabricmc.v1rucovsdemons.common.blockEntity;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtType;
+import net.minecraft.nbt.visitor.NbtElementVisitor;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class altarEntity extends BlockEntity implements IStorable {
+import java.io.DataOutput;
+import java.io.IOException;
+
+public class altarEntity extends BlockEntity implements IStorable, BlockEntityClientSerializable {
     DefaultedList<ItemStack> items = DefaultedList.ofSize(6,ItemStack.EMPTY);
     private boolean IsCraftingMode = false;
-    public boolean getBuiltStatus(){
+    public boolean getCraftingMode(){
         return IsCraftingMode;
     }
 
@@ -39,14 +37,25 @@ public class altarEntity extends BlockEntity implements IStorable {
     }
 
     public void setLastStack(ItemStack stack){
-        int lastIndex = 0;
-        for (int i=0; i<6;i++) {
-            if(!items.get(i).isEmpty()) lastIndex++;
-            else break;
+        for(int i =0;i<6;i++){
+            if(!getItems().get(i).isEmpty()) continue;
+            else {
+                getItems().set(i,stack);
+                return;
+            }
         }
-        if(lastIndex<6) items.add(lastIndex,stack);
     }
+
     public ItemStack removeLastStack(){
+        for(int i =5;i>=0;i--){
+            if(!getItems().get(i).isEmpty()) {
+                var toReturn = getItems().get(i).copy();
+                getItems().set(i,ItemStack.EMPTY);
+                //sync();
+                return toReturn;
+            }
+            else continue;
+        }
         return null;
     }
 
@@ -56,16 +65,31 @@ public class altarEntity extends BlockEntity implements IStorable {
     }
 
     @Override
+    public void fromClientTag(NbtCompound tag) {
+        super.readNbt(tag);
+        var list = DefaultedList.ofSize(6,ItemStack.EMPTY);
+        Inventories.readNbt(tag,list);
+        for (int i=0;i<6;i++)
+            setStack(i,list.get(i));
+    }
+
+    @Override
+    public NbtCompound toClientTag(NbtCompound tag) {
+        Inventories.writeNbt(tag,getItems());
+        super.writeNbt(tag);
+        sync();
+        return tag;
+    }
+
+    @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        Inventories.readNbt(nbt,items);
     }
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         nbt.putBoolean("IsCraftingMode",IsCraftingMode);
         Inventories.writeNbt(nbt,items);
-
         return super.writeNbt(nbt);
     }
 

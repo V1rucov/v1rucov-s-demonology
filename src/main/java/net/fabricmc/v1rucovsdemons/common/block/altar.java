@@ -2,6 +2,7 @@ package net.fabricmc.v1rucovsdemons.common.block;
 
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.fabricmc.v1rucovsdemons.common.block.model.altarModel;
+import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.fabricmc.v1rucovsdemons.common.ritual.*;
 import net.minecraft.block.Block;
@@ -11,6 +12,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
@@ -28,28 +30,19 @@ import org.jetbrains.annotations.Nullable;
 public class altar extends BlockWithEntity implements BlockEntityProvider {
     public altar(Settings settings) {
         super(settings);
-        setDefaultState(this.getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
+        //setDefaultState(this.getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
     }
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(Properties.HORIZONTAL_FACING);
+        //builder.add(Properties.HORIZONTAL_FACING);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        var dir = state.get(Properties.HORIZONTAL_FACING);
-        switch(dir){
-            case NORTH : return altarModel.ShapeNorth;
-            case WEST: return altarModel.ShapeWest;
-            case EAST: return altarModel.ShapeEast;
-            default: return altarModel.ShapeSouth;
-        }
+        return altarModel.Shape;
     }
 
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return (BlockState)this.getDefaultState().with(Properties.HORIZONTAL_FACING, ctx.getPlayerFacing());
-    }
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
@@ -72,24 +65,29 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
         if(!world.isClient){
             var be = (altarEntity)world.getBlockEntity(pos);
             if(player.getMainHandStack().getItem()== v1ModMain.OBSIDIAN_KNIFE){
-                var ritualCreator = new ritualCreator();
-                ritualCreator.CreateRitual(be.getItems());
+                var Creator = new ritualCreator();
+                var ritual = Creator.CreateRitual(be.getItems());
                 /*
-                    логика для ритуалов: проклятия, урон за ритуал и прочая хрень.
-                */
+                 *  логика для ритуалов: проклятия, урон за ритуал и прочая хрень.
+                 */
+                if(ritual!=null) ritual.Invoke(be);
+                be.sync();
                 return  ActionResult.SUCCESS;
             }
             else if(!player.getMainHandStack().isEmpty()){
-                be.setLastStack(player.getMainHandStack().split(1));
-                player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
+                if(be.getItems().get(5).isEmpty()){
+                    be.setLastStack(player.getMainHandStack().split(1));
+                    player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
+                    be.sync();
+                }
                 return ActionResult.SUCCESS;
             }
             else if(player.getMainHandStack().isEmpty() && player.isSneaking()){
                 var lastStack = be.removeLastStack();
-                player.getInventory().setStack(player.getInventory().selectedSlot,lastStack);
-                return ActionResult.SUCCESS;
+                if (lastStack!=null) player.getInventory().setStack(player.getInventory().selectedSlot,lastStack);
+                be.sync();
             }
         }
-        return ActionResult.CONSUME;
+        return ActionResult.SUCCESS;
     }
 }

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.v1rucovsdemons.common.block.*;
 import net.fabricmc.v1rucovsdemons.common.item.*;
+import net.fabricmc.v1rucovsdemons.common.ritual.*;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -41,6 +42,6 @@ public class v1ModMain implements ModInitializer {
 	}
 	@Override
 	public void onInitialize() {
-
+		ritual soulBeacon = new soulBeaconRitual();
 	}
 }
