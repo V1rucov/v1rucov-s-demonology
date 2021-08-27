@@ -2,6 +2,7 @@ package net.fabricmc.v1rucovsdemons.common.blockEntity;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
+import net.fabricmc.v1rucovsdemons.init.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +29,7 @@ public class altarEntity extends BlockEntity implements IStorable, BlockEntityCl
     }
 
     public altarEntity(BlockPos pos, BlockState state){
-        super(v1ModMain.ALTAR_ENTITY,pos, state);
+        super(blockEntityInit.ALTAR_ENTITY,pos, state);
     }
 
     @Override

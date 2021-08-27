@@ -3,6 +3,7 @@ package net.fabricmc.v1rucovsdemons.common.block;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.fabricmc.v1rucovsdemons.common.block.model.altarModel;
 import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
+import net.fabricmc.v1rucovsdemons.init.*;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
 import net.fabricmc.v1rucovsdemons.common.ritual.*;
 import net.minecraft.block.Block;
@@ -56,7 +57,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, v1ModMain.ALTAR_ENTITY, (world1, pos, state1, be) -> altarEntity.tick(world1,pos,state1,be));
+        return checkType(type, blockEntityInit.ALTAR_ENTITY, (world1, pos, state1, be) -> altarEntity.tick(world1,pos,state1,be));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient){
             var be = (altarEntity)world.getBlockEntity(pos);
-            if(player.getMainHandStack().getItem()== v1ModMain.OBSIDIAN_KNIFE){
+            if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE){
                 var Creator = new ritualCreator();
                 var ritual = Creator.CreateRitual(be.getItems());
                 /*
