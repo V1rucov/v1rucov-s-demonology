@@ -14,6 +14,7 @@ import net.fabricmc.v1rucovsdemons.common.entity.render.ghostModelRenderer;
 import net.fabricmc.v1rucovsdemons.init.*;
 import net.fabricmc.v1rucovsdemons.init.renderInit;
 import net.fabricmc.v1rucovsdemons.v1ModMain;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 

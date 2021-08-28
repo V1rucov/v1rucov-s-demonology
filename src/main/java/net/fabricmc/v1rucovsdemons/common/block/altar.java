@@ -65,7 +65,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient){
             var be = (altarEntity)world.getBlockEntity(pos);
-            if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE){
+            if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE && !be.getCraftingMode()){
                 var Creator = new ritualCreator();
                 var ritual = Creator.CreateRitual(be.getItems());
                 /*
@@ -75,7 +75,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
                 be.sync();
                 return  ActionResult.SUCCESS;
             }
-            else if(!player.getMainHandStack().isEmpty()){
+            else if(!player.getMainHandStack().isEmpty() && !be.getCraftingMode()){
                 if(be.getItems().get(5).isEmpty()){
                     be.setLastStack(player.getMainHandStack().split(1));
                     player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
@@ -83,7 +83,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
                 }
                 return ActionResult.SUCCESS;
             }
-            else if(player.getMainHandStack().isEmpty() && player.isSneaking()){
+            else if(player.getMainHandStack().isEmpty() && player.isSneaking() && !be.getCraftingMode()){
                 var lastStack = be.removeLastStack();
                 if (lastStack!=null) player.getInventory().setStack(player.getInventory().selectedSlot,lastStack);
                 be.sync();

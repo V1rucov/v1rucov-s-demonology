@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 public class ghostModelRenderer extends MobEntityRenderer<ghostEntity, ghostEntityModel> {
     private static final Identifier texture = new Identifier("v1rucovsdemons:textures/entity/ghost.png");
     public ghostModelRenderer(EntityRendererFactory.Context ctx){
-        super(ctx,new ghostEntityModel(ctx.getPart(entityInit.GHOST_LAYER)),2f);
+        super(ctx,new ghostEntityModel(ctx.getPart(entityInit.GHOST_LAYER)),0.6f);
     }
 
     @Override
