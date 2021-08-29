@@ -65,25 +65,27 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient){
             var be = (altarEntity)world.getBlockEntity(pos);
-            if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE && !be.getCraftingMode()){
+            if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE && !be.IsCraftingMode){
                 var Creator = new ritualCreator();
                 var ritual = Creator.CreateRitual(be.getItems());
                 /*
                  *  логика для ритуалов: проклятия, урон за ритуал и прочая хрень.
                  */
-                if(ritual!=null) ritual.Invoke(be);
-                be.sync();
+                if(ritual!=null) {
+                    ritual.Invoke(be, player);
+                    be.sync();
+                }
                 return  ActionResult.SUCCESS;
             }
-            else if(!player.getMainHandStack().isEmpty() && !be.getCraftingMode()){
+            else if(!player.getMainHandStack().isEmpty() && !be.IsCraftingMode){
                 if(be.getItems().get(5).isEmpty()){
                     be.setLastStack(player.getMainHandStack().split(1));
-                    player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
+                    //player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
                     be.sync();
                 }
                 return ActionResult.SUCCESS;
             }
-            else if(player.getMainHandStack().isEmpty() && player.isSneaking() && !be.getCraftingMode()){
+            else if(player.getMainHandStack().isEmpty() && player.isSneaking() && !be.IsCraftingMode){
                 var lastStack = be.removeLastStack();
                 if (lastStack!=null) player.getInventory().setStack(player.getInventory().selectedSlot,lastStack);
                 be.sync();

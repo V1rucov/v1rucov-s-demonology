@@ -23,10 +23,7 @@ import java.io.IOException;
 
 public class altarEntity extends BlockEntity implements IStorable, BlockEntityClientSerializable {
     DefaultedList<ItemStack> items = DefaultedList.ofSize(6,ItemStack.EMPTY);
-    private boolean IsCraftingMode = false;
-    public boolean getCraftingMode(){
-        return IsCraftingMode;
-    }
+    public boolean IsCraftingMode = false;
 
     public altarEntity(BlockPos pos, BlockState state){
         super(blockEntityInit.ALTAR_ENTITY,pos, state);
