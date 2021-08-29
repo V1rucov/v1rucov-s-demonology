@@ -20,6 +20,7 @@ public class soulBeaconRitual extends ritual{
     @Override
     public void Invoke(altarEntity entity) {
         System.out.println("ритуал проведён");
+
     }
 
     @Override

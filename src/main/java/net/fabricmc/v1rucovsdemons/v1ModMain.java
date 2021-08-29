@@ -15,7 +15,7 @@ public class v1ModMain implements ModInitializer {
 			.icon(()->new ItemStack(itemInit.OBSIDIAN_KNIFE)).build();
 	static{
 		itemInit II = new itemInit();
-		//renderInit RI = new renderInit();
+		renderInit RI = new renderInit();
 		blockInit BI = new blockInit();
 		blockEntityInit BEI = new blockEntityInit();
 		entityInit EI = new entityInit();

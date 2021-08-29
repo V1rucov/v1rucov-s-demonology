@@ -16,11 +16,5 @@ public class renderInit {
 
     public static void init(){
 
-        BlockEntityRendererRegistry.INSTANCE.register(blockEntityInit.ALTAR_ENTITY, new BlockEntityRendererFactory<altarEntity>() {
-            @Override
-            public BlockEntityRenderer<altarEntity> create(Context ctx) {
-                return new altarEntityRenderer(ctx.getRenderDispatcher());
-            }
-        });
     }
 }

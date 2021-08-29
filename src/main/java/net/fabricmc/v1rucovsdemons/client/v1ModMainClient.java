@@ -26,6 +26,13 @@ public class v1ModMainClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(entityInit.GHOST_ENTITY,(context)-> new ghostModelRenderer(context));
         EntityModelLayerRegistry.registerModelLayer(entityInit.GHOST_LAYER, ghostEntityModel::getTexturedModelData);
 
+        BlockEntityRendererRegistry.INSTANCE.register(blockEntityInit.ALTAR_ENTITY, new BlockEntityRendererFactory<altarEntity>() {
+            @Override
+            public BlockEntityRenderer<altarEntity> create(Context ctx) {
+                return new altarEntityRenderer(ctx.getRenderDispatcher());
+            }
+        });
+
         renderInit RI = new renderInit();
         entityInit EI = new entityInit();
     }
