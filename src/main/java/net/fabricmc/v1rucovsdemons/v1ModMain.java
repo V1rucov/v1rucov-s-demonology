@@ -19,6 +19,7 @@ public class v1ModMain implements ModInitializer {
 		blockInit BI = new blockInit();
 		blockEntityInit BEI = new blockEntityInit();
 		entityInit EI = new entityInit();
+		eventInit eventInit = new eventInit();
 	}
 	@Override
 	public void onInitialize() {

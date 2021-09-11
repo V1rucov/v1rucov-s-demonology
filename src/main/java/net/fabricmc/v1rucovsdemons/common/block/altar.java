@@ -28,14 +28,11 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.beans.Expression;
+
 public class altar extends BlockWithEntity implements BlockEntityProvider {
     public altar(Settings settings) {
         super(settings);
-        //setDefaultState(this.getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
-    }
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        //builder.add(Properties.HORIZONTAL_FACING);
     }
 
     @Override
@@ -68,19 +65,19 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
             if(player.getMainHandStack().getItem()== itemInit.OBSIDIAN_KNIFE && !be.IsCraftingMode){
                 var Creator = new ritualCreator();
                 var ritual = Creator.CreateRitual(be.getItems());
-                /*
-                 *  логика для ритуалов: проклятия, урон за ритуал и прочая хрень.
-                 */
+
                 if(ritual!=null) {
-                    ritual.Invoke(be, player);
-                    be.sync();
+                    if(ritual.CheckConditions(player,be)){
+                        be.ritual = ritual;
+                        be.player = player;
+                        be.sync();
+                    }
                 }
                 return  ActionResult.SUCCESS;
             }
             else if(!player.getMainHandStack().isEmpty() && !be.IsCraftingMode){
                 if(be.getItems().get(5).isEmpty()){
                     be.setLastStack(player.getMainHandStack().split(1));
-                    //player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
                     be.sync();
                 }
                 return ActionResult.SUCCESS;

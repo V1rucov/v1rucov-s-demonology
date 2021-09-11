@@ -1,25 +1,26 @@
 package net.fabricmc.v1rucovsdemons.common.ritual;
 
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.v1rucovsdemons.common.entity.*;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
-import net.fabricmc.v1rucovsdemons.common.entity.ghostEntity;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.util.ClientPlayerTickable;
-import net.minecraft.entity.mob.VexEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class soulBeaconRitual extends ritual implements ClientPlayerTickable{
+public class soulBeaconRitual extends ritual {
     public soulBeaconRitual(){
-        super();
+        ritualCreator.rituals.add(this);
+
         components.set(0,new ItemStack(Items.WITHER_SKELETON_SKULL));
         components.set(1,new ItemStack(Items.ROTTEN_FLESH));
         components.set(2,new ItemStack(Items.ROTTEN_FLESH));
@@ -29,42 +30,43 @@ public class soulBeaconRitual extends ritual implements ClientPlayerTickable{
     }
 
     @Override
-    public void Invoke(altarEntity entity, PlayerEntity player) {
-        var world = entity.getWorld();
+    public DefaultedList<ItemStack> getComponents() {
+        return components;
+    }
+
+    @Override
+    public boolean CheckConditions(PlayerEntity player, BlockEntity blockEntity) {
+        var be = (altarEntity)blockEntity;
+        var world = be.getWorld();
+
         if(world.getTimeOfDay()>=12000 && world.getTimeOfDay()<=24000){
-            this.entity = entity;
-            this.world = world;
-            this.player = player;
             player.sendMessage(new LiteralText("Soul beacon ritual started."),true);
-            tick();
+            be.IsCraftingMode = true;
+            System.out.println("ночь");
+            return true;
         }
-        else player.sendMessage(new LiteralText("This ritual requires night time."),true);
+        player.sendMessage(new LiteralText("This ritual requires night time."),true);
+        return  false;
     }
 
     @Override
-    public void tick() {
-        var ent = (altarEntity) entity;
-        ent.IsCraftingMode = true;
-        if(world.getTimeOfDay()<=24000){
-            System.out.println("ГГ");
-        }
-        else{
-            player.sendMessage(new LiteralText("Ritual ended."),true);
-            ent.getItems().clear();
-            ent.IsCraftingMode = false;
-        }
-    }
+    public ActionResult Invoke(PlayerEntity player, BlockEntity blockEntity) {
+        var be = (altarEntity)blockEntity;
+        var world = be.getWorld();
 
-    @Override
-    public boolean compareIngredients(DefaultedList<ItemStack> items) {
-        boolean equals = true;
-        for (int i =0; i<6;i++) {
-            if(items.get(i).getItem() == components.get(i).getItem()) continue;
-            else {
-                equals = false;
-                break;
+        if(world.getTimeOfDay()>=12000 && world.getTimeOfDay()<=24000){
+            var ghosts = world.getNonSpectatingEntities(ghostEntity.class, new Box(200,200,200,1,1,1));
+            for (var ghost : ghosts) {
+                ghost.setTarget(player);
             }
         }
-        return equals;
+        else {
+            player.sendMessage(new LiteralText("Ritual ended."),true);
+            be.ritual = null;
+            be.IsCraftingMode = false;
+            be.getItems().clear();
+            be.sync();
+        }
+        return ActionResult.SUCCESS;
     }
 }

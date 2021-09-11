@@ -4,10 +4,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.fabricmc.v1rucovsdemons.common.blockEntity.*;
 
 public class ghostEntity extends HostileEntity {
 
@@ -29,6 +33,7 @@ public class ghostEntity extends HostileEntity {
         if(this.isAffectedByDaylight()) this.setOnFireFor(8);
         super.tickMovement();
     }
+    //get
 
     @Override
     protected void initGoals() {
@@ -37,10 +42,20 @@ public class ghostEntity extends HostileEntity {
         this.goalSelector.add(1,new LookAtEntityGoal(this, PlayerEntity.class,5f, 1f));
         this.goalSelector.add(2,new LookAtEntityGoal(this, MobEntity.class,5f, 8f));
         this.goalSelector.add(4,new AvoidSunlightGoal(this));
-        //this.goalSelector.add(5, new FleeEntityGoal<>(this,));
 
         this.targetSelector.add(1,new FollowTargetGoal<>(this, AnimalEntity.class,true).setMaxTimeWithoutVisibility(300));
         this.targetSelector.add(2,new FollowTargetGoal<>(this,PlayerEntity.class,true).setMaxTimeWithoutVisibility(300));
         this.targetSelector.add(3,new AttackGoal(this));
+    }
+
+    @Override
+    public void onDeath(DamageSource source) {
+        //world.add
+        super.onDeath(source);
+    }
+
+    @Override
+    protected ActionResult interactMob(PlayerEntity player, Hand hand) {
+        return super.interactMob(player, hand);
     }
 }

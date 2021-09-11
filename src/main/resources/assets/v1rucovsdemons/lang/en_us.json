@@ -1,5 +1,6 @@
 {
   "block.v1rucovsdemons.altar_block": "altar",
   "item.v1rucovsdemons.obsidian_knife": "obsidian knife",
-  "itemGroup.v1rucovsdemons.v1demons": "demonology"
+  "itemGroup.v1rucovsdemons.v1demons": "demonology",
+  "item.v1rucovsdemons.ectoplasm": "ectoplasm"
 }
