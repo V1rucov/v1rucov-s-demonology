@@ -26,7 +26,7 @@
     ]
   },
   "mixins": [
-
+      "v1rucovsdemons.mixins.json"
   ],
 
   "depends": {

@@ -1,25 +1,36 @@
 package net.fabricmc.v1rucovsdemons.common.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
+import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.*;
+import net.fabricmc.v1rucovsdemons.init.*;
 
 public class ghostEntity extends HostileEntity {
 
     public ghostEntity(EntityType<? extends ghostEntity> entityType, World world){
         super(entityType, world);
     }
-
-    protected final boolean burnsInDaylight = true;
 
     public static DefaultAttributeContainer.Builder createHostileAttributes() {
         return MobEntity.createMobAttributes()
@@ -33,7 +44,11 @@ public class ghostEntity extends HostileEntity {
         if(this.isAffectedByDaylight()) this.setOnFireFor(8);
         super.tickMovement();
     }
-    //get
+
+    @Override
+    public void tick() {
+        super.tick();
+    }
 
     @Override
     protected void initGoals() {
@@ -46,12 +61,27 @@ public class ghostEntity extends HostileEntity {
         this.targetSelector.add(1,new FollowTargetGoal<>(this, AnimalEntity.class,true).setMaxTimeWithoutVisibility(300));
         this.targetSelector.add(2,new FollowTargetGoal<>(this,PlayerEntity.class,true).setMaxTimeWithoutVisibility(300));
         this.targetSelector.add(3,new AttackGoal(this));
+
     }
 
     @Override
     public void onDeath(DamageSource source) {
-        //world.add
         super.onDeath(source);
+        if(!world.isClient)
+            world.playSound(null,this.getBlockPos(),soundInit.GHOST_DAMAGED, SoundCategory.HOSTILE,1f,1f);
+    }
+
+    @Override
+    public boolean tryAttack(Entity target) {
+        if (!super.tryAttack(target)) {
+            return false;
+        } else {
+            if (target instanceof LivingEntity) {
+                ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER,100),this);
+                ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,300),this);
+            }
+            return true;
+        }
     }
 
     @Override

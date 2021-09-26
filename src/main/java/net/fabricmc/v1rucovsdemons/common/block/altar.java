@@ -2,33 +2,24 @@ package net.fabricmc.v1rucovsdemons.common.block;
 
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.fabricmc.v1rucovsdemons.common.block.model.altarModel;
-import net.fabricmc.v1rucovsdemons.common.interfaces.IStorable;
 import net.fabricmc.v1rucovsdemons.init.*;
-import net.fabricmc.v1rucovsdemons.v1ModMain;
+import net.fabricmc.v1rucovsdemons.PlayerEntityExt;
 import net.fabricmc.v1rucovsdemons.common.ritual.*;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.block.*;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.beans.Expression;
 
 public class altar extends BlockWithEntity implements BlockEntityProvider {
     public altar(Settings settings) {
@@ -70,6 +61,7 @@ public class altar extends BlockWithEntity implements BlockEntityProvider {
                     if(ritual.CheckConditions(player,be)){
                         be.ritual = ritual;
                         be.player = player;
+                        ((PlayerEntityExt)player).addCurseLevel(1);
                         be.sync();
                     }
                 }

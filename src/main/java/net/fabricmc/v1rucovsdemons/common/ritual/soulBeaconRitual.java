@@ -6,6 +6,7 @@ import net.fabricmc.v1rucovsdemons.common.entity.*;
 import net.fabricmc.v1rucovsdemons.common.blockEntity.altarEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -55,7 +56,7 @@ public class soulBeaconRitual extends ritual {
         var world = be.getWorld();
 
         if(world.getTimeOfDay()>=12000 && world.getTimeOfDay()<=24000){
-            var ghosts = world.getNonSpectatingEntities(ghostEntity.class, new Box(200,200,200,1,1,1));
+            var ghosts = world.getNonSpectatingEntities(ghostEntity.class, new Box(400,200,400,1,1,1));
             for (var ghost : ghosts) {
                 ghost.setTarget(player);
             }

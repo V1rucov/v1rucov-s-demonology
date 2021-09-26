@@ -7,6 +7,7 @@ import net.fabricmc.v1rucovsdemons.init.blockInit;
 import net.fabricmc.v1rucovsdemons.init.*;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 
 public class v1ModMain implements ModInitializer {
 	public static final String modId = "v1rucovsdemons";
@@ -20,10 +21,11 @@ public class v1ModMain implements ModInitializer {
 		blockEntityInit BEI = new blockEntityInit();
 		entityInit EI = new entityInit();
 		eventInit eventInit = new eventInit();
+		statusEffectInit SE = new statusEffectInit();
 	}
 	@Override
 	public void onInitialize() {
-		//rituals
 		ritual soulBeacon = new soulBeaconRitual();
+		soundInit SI = new soundInit();
 	}
 }
