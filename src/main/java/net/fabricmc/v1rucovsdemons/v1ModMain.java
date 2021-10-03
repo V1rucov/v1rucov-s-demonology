@@ -26,6 +26,7 @@ public class v1ModMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ritual soulBeacon = new soulBeaconRitual();
+		ritual boneOfEthernalThirstRitual = new boneOfEthernalThirstRitual();
 		soundInit SI = new soundInit();
 	}
 }
