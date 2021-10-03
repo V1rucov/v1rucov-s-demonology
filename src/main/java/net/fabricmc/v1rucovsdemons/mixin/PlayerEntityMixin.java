@@ -35,12 +35,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci){
         nbt.putInt("curseLevel",this.curseLevel);
-        System.out.println(this.curseLevel);
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci){
         this.curseLevel = nbt.getInt("curseLevel");
-        System.out.println(this.curseLevel);
     }
 }
